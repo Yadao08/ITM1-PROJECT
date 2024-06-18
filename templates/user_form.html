@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        select {
+            height: 40px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        video {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #snapshot-canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            form {
+                padding: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Student Registration Form</h1>
+    <form action="/form" method="post" enctype="multipart/form-data" >
+        <label>Firstname:</label>
+        <input type="text" name="fname" placeholder="Firstname">
+        <br><br>
+
+        <label>Middlename:</label>
+        <input type="text" name="midname" placeholder="Middlename">
+        <br><br>
+
+        <label>Lastname:</label>
+        <input type="text" name="lname" placeholder="Lastname">
+        <br><br>
+
+        <label>Phone Number:</label>
+        <input type="number" name="tel" placeholder="Contact">
+        <br><br>
+
+        <label>Gender:</label>
+        <select name="gen">
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+        <br><br>
+
+        <label>Birthdate:</label>
+        <input type="date" name="bdate">
+        <br><br>
+
+        <label>Course:</label>
+        <select name="crsename">
+            <option>BS Information Technology</option>
+            <option>BS Computer Science</option>
+            <option>BS Business Administration</option>
+        </select>
+        <br><br>
+
+        <label>Institutional Email:</label>
+        <input type="email" name="mail" placeholder="@aclcbutuan.edu.ph">
+        <br><br>
+
+        <label>Student Number:</label>
+        <input type="text" name="studnum" maxlength="11" placeholder="USN">
+        <br><br>
+
+        <label>Password:</label>
+        <input type="password" name="pass" placeholder="Password">
+        <br><br>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+          {% endif %}
+        <label>Upload Photo:</label>
+        <input type="file" name="photo" accept=".png, .jpeg, .jpg">
+        <br><br>
+        <label>Live Capture:</label><br>
+        <button type="button" onclick="startCamera()">Start Camera</button>
+        <br><br>
+        <video id="live-capture" width="320" height="240" style="display:none;"></video>
+        <br>
+        <button type="button" onclick="captureSnapshot()">Captured Photo</button>
+        <a id="downloadLink" download="student_capture.png">Download</a>
+        <canvas id="snapshot-canvas" width="320" height="240" style="display:none;"></canvas>
+        <br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        // Declare a variable to track the camera status
+        var cameraStarted = false;
+
+        // Function to start the camera
+        function startCamera() {
+            var video = document.getElementById('live-capture');
+            var button = document.querySelector('button');
+
+            if (!cameraStarted) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        video.style.display = 'block';
+                        video.play();
+                        button.innerText = 'Stop Camera';
+                        cameraStarted = true;
+                    })
+                    .catch(function (err) {
+                        console.error('Error accessing the camera: ', err);
+                    });
+            } else {
+                // Stop the video stream
+                var stream = video.srcObject;
+                var tracks = stream.getTracks();
+                tracks.forEach(function (track) {
+                    track.stop();
+                });
+
+                video.style.display = 'none';
+                button.innerText = 'Start Camera';
+                cameraStarted = false;
+            }
+        }
+
+        // Function to capture a snapshot from the video stream
+        function captureSnapshot() {
+            var video = document.getElementById('live-capture');
+            var canvas = document.getElementById('snapshot-canvas');
+            var context = canvas.getContext('2d');
+
+            // Draw the current frame of the video on the canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas content to a data URL (base64)
+            var snapshotDataUrl = canvas.toDataURL('image/png');
+
+            // Set the data URL as the href of the download link
+            var downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = snapshotDataUrl;
+
+            // If the camera is started, stop it
+            if (cameraStarted) {
+                startCamera();
+            }
+
+            // Trigger a click on the download link to initiate the download
+            downloadLink.click();
+        }
+    </script>    
+</body>
+</html>
