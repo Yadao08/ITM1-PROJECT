@@ -1,0 +1,199 @@
+<!--Website: wwww.codingdung.com-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodingDung | Profile Template</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        h4 {
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        .list-group-item {
+            cursor: pointer;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+
+        .account-settings-fileinput {
+            display: none;
+        }
+
+        .btn-default {
+            margin-right: 10px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid #fff; /* Optional: Add a border for better visual appeal */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .btn-primary {
+            margin-right: 10px;
+        }
+
+        .btn-google {
+            background-color: #dd4b39;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .btn-facebook {
+            background-color: #3b5998;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .btn-instagram {
+            background-color: #bc2a8d;
+            color: #fff;
+        }
+
+        .switcher {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switcher-input {
+            display: none;
+        }
+
+        .switcher-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .switcher-label {
+            margin-left: 60px;
+            line-height: 24px;
+        }
+
+        .switcher-input:checked + .switcher-indicator {
+            transform: translateX(26px);
+        }
+    </style>
+    <script>
+        function changePassword() {
+            var oldPassword = $('#oldPassword').val();
+            var newPassword = $('#newPassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+    
+            // Add your validation logic here
+    
+            // Submit the form
+            $('#changePasswordForm').submit();
+        }
+    
+        // Bind the function to the "Save changes" button click
+        $(document).ready(function () {
+            $('#changePasswordBtn').click(function () {
+                // Show the Change Password tab
+                showTab('#account-change-password');
+                
+                // Optionally, you can focus on the old password field
+                $('#oldPassword').focus();
+            });
+
+            $('#saveChangesBtn').click(function () {
+                // Save changes logic here
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container light-style flex-grow-1 container-p-y">
+        <h4 class="font-weight-bold py-3 mb-4">
+            Account settings
+        </h4>
+        <div class="card overflow-hidden">
+            <div class="row no-gutters row-bordered row-border-light">
+                <div class="col-md-3 pt-0">
+                    <div class="list-group list-group-flush account-settings-links">
+                        <a class="list-group-item list-group-item-action active" data-toggle="list"
+                            href="#account-general">Student Info</a>
+                            <a id="changePasswordBtn" class="list-group-item list-group-item-action">Change Password</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+
+                    <div class="tab-content">
+                        <form action="{{ url_for('change_password') }}" method="post" id="changePasswordForm"></form>
+                        <div class="tab-pane fade active show" id="account-general">
+                            <div class="card-body media align-items-center">
+                                <div class="media-body ml-4">
+                                    <label class="form-label">Old Password:</label>
+                                    <input type="password" name="pass" class="form-control mb-1" >
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Create New Password:</label>
+                                    <input type="password" name="newpass" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Confirm New Password:</label>
+                                    <input type="password" name="confirmPassword" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="text-right mt-3">
+                                <button id="saveChangesBtn" type="button" class="btn btn-primary">Save changes</button>&nbsp;
+                                <button type="button" class="btn btn-default">Cancel</button>
+                            </div>
+                        <!-- Add other tab content sections here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-right mt-3">
+            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
+            <button type="button" class="btn btn-default">Cancel</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"></script>
+</body>
+
+</html>
